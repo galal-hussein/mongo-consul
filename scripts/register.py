@@ -10,16 +10,14 @@ parser.add_argument('-ci','--consul-ip',help='Consul Agent IP Address', required
 parser.add_argument('-cp','--consul-port',help='Consul Agent Active Port', required=True)
 args = parser.parse_args()
 
-agent = consul.Consul(host=consul_ip, port=consul_port, dc="dc1")
-
 def register_mongo(ip, hostname, port, role):
-    catalog = agent.Catalog()
+    catalog = consul.Consul(host=args.consul_ip, port=args.consul_port, dc="dc1").catalog
     dc = "dc1"
     service=dict()
     service["Service"] = "MongoDB"
     service["ID"] = hostname
     service["Tags"] = [role]
-    service["Port"] = port
+    service["Port"] = int(port)
     catalog.register(hostname,ip,service=service,dc=dc)
 
 register_mongo(args.mongo_ip, args.mongo_hostname,args.mongo_port,args.mongo_role)
