@@ -15,4 +15,4 @@ python register.py --mongo-ip $MONGO_NODE_IP \
               --consul-ip $CONSUL_IP \
               --consul-port $CONSUL_PORT
 
-exec /run.sh
+/usr/bin/mongod --httpinterface --rest 
